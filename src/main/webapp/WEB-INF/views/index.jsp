@@ -3,7 +3,7 @@
 <html>
     <head>
         <title>Cheesy Path</title>
-        
+
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
         <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
         <script type='text/javascript' src='<c:url value='/resources/js/script.js' />'></script>
@@ -20,10 +20,11 @@
             <svg id='interactive'></svg>
         </div>
         <div class='buttonContainer'>
-            <button onclick='addPoint()' class="icon-button"><i class="material-icons">add</i></button>
-            <button onclick='update(false)' class="icon-button"><i class="material-icons">refresh</i></button>
-            <button onclick='draw(3)' class="icon-button"><i class="material-icons">play_arrow</i></button>
+            <button onclick='addPoint()' class="icon-button" title="Add Point"><i class="material-icons">add</i></button>
+            <button onclick='update(false)' class="icon-button" title="Refresh"><i class="material-icons">refresh</i></button>
+            <button onclick='draw(3)' class="icon-button" title="Animate"><i class="material-icons">play_arrow</i></button>
             <button onclick="showWaypointsList()">Waypoints Code</button>
+            <button id="resetButton" onclick="restoreFromFile()" class="icon-button" title="Restore from file"><i class="material-icons">sync</i></button>
             <button id="openButton" onclick="openFile()" class="btn-pair-left">Open</button>
             <button id="saveButton" onclick="saveFile()" class="btn-pair-center">
                 Save
@@ -37,8 +38,10 @@
                 <option value="7_field1">7_field1</option>
                 <option value="7_field2">7_field2</option>
                 <option value="7_field3">7_field3</option>
+                <option value="snowremoval">Snow Removal</option>
+                <option value="SnowThrower">Snow Thrower</option>
             </select>
-            <label class='checkbox'>Is reversed: <input type='checkbox' id='isReversed'></label>
+            <label class='checkbox'>Is reversed: <input type='checkbox' class='data-input' id='isReversed'></label>
         </div>
         <table>
             <thead>
@@ -81,7 +84,7 @@
         update: update,
         forcePlaceholderSize: true,
     }).disableSelection();
-        
+
     function fixWidthHelper(e, ui) {
         ui.children().each(function() {
             $(this).width($(this).width());
