@@ -639,8 +639,8 @@ async function writeFile(fileHandle, contents) {
 function generateCSV() {
     const csv = new CSV(
         waypoints.map(point => ({
-            x: point.translation.x,
-            y: point.translation.y,
+            x: point.translation._x,
+            y: point.translation._y,
             heading: Math.round(point.rotation.degrees),
         })),
         isReversedCheckbox.checked
