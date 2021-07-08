@@ -2585,46 +2585,52 @@
   function Pose2d_init_$Init$(translation_, rotation_, $mask0, $marker, $this) {
     if (!(($mask0 & 1) === 0))
       translation_ = Translation2d_init_$Create$();
-    if (!(($mask0 & 2) === 0)) {
-      rotation_ = Rotation2d_init_$Create$(0.0, 0.0, false, 7, null);
-    }Pose2d.call($this, translation_, rotation_);
+    if (!(($mask0 & 2) === 0))
+      rotation_ = Rotation2d_init_$Create$_0();
+    Pose2d.call($this, translation_, rotation_);
     return $this;
   }
   function Pose2d_init_$Create$(translation_, rotation_, $mask0, $marker) {
     return Pose2d_init_$Init$(translation_, rotation_, $mask0, $marker, Object.create(Pose2d.prototype));
   }
-  function Pose2d_init_$Init$_0(x, y, rotation, $this) {
-    Pose2d.call($this, new Translation2d(x, y), rotation);
+  function Pose2d_init_$Init$_0($this) {
+    Pose2d.call($this, Translation2d_init_$Create$(), Rotation2d_init_$Create$_0());
     return $this;
   }
-  function Pose2d_init_$Create$_0(x, y, rotation) {
-    return Pose2d_init_$Init$_0(x, y, rotation, Object.create(Pose2d.prototype));
+  function Pose2d_init_$Create$_0() {
+    return Pose2d_init_$Init$_0(Object.create(Pose2d.prototype));
   }
   function Pose2d_init_$Init$_1(x, y, rotation, $this) {
-    Pose2d_init_$Init$_0(x, y, Companion_getInstance_3().fromDegrees(rotation), $this);
+    Pose2d.call($this, new Translation2d(x, y), rotation);
     return $this;
   }
   function Pose2d_init_$Create$_1(x, y, rotation) {
     return Pose2d_init_$Init$_1(x, y, rotation, Object.create(Pose2d.prototype));
   }
-  function Pose2d_init_$Init$_2(other, $this) {
-    Pose2d.call($this, Translation2d_init_$Create$_0(other._translation_), Rotation2d_init_$Create$_0(other._rotation_));
+  function Pose2d_init_$Init$_2(x, y, rotation, $this) {
+    Pose2d_init_$Init$_1(x, y, Companion_getInstance_3().fromDegrees(rotation), $this);
     return $this;
   }
-  function Pose2d_init_$Create$_2(other) {
-    return Pose2d_init_$Init$_2(other, Object.create(Pose2d.prototype));
+  function Pose2d_init_$Create$_2(x, y, rotation) {
+    return Pose2d_init_$Init$_2(x, y, rotation, Object.create(Pose2d.prototype));
+  }
+  function Pose2d_init_$Init$_3(other, $this) {
+    Pose2d.call($this, Translation2d_init_$Create$_0(other._translation_), Rotation2d_init_$Create$_1(other._rotation_));
+    return $this;
+  }
+  function Pose2d_init_$Create$_3(other) {
+    return Pose2d_init_$Init$_3(other, Object.create(Pose2d.prototype));
   }
   function Companion_2() {
     Companion_instance_1 = this;
-    var tmp = this;
-    tmp._kIdentity = Pose2d_init_$Create$(null, null, 3, null);
+    this._kIdentity = Pose2d_init_$Create$_0();
     this._kEps = 1.0E-9;
   }
   Companion_2.prototype.identity = function () {
     return this._kIdentity;
   };
   Companion_2.prototype.fromTranslation = function (translation) {
-    return new Pose2d(translation, Rotation2d_init_$Create$(0.0, 0.0, false, 7, null));
+    return new Pose2d(translation, Rotation2d_init_$Create$_0());
   };
   Companion_2.prototype.fromRotation = function (rotation) {
     return new Pose2d(Translation2d_init_$Create$(), rotation);
@@ -2678,13 +2684,7 @@
   function Pose2d(translation_, rotation_) {
     Companion_getInstance_1();
     var translation__0 = translation_ === void 1 ? Translation2d_init_$Create$() : translation_;
-    var tmp;
-    if (rotation_ === void 1) {
-      tmp = Rotation2d_init_$Create$(0.0, 0.0, false, 7, null);
-    } else {
-      tmp = rotation_;
-    }
-    var rotation__0 = tmp;
+    var rotation__0 = rotation_ === void 1 ? Rotation2d_init_$Create$_0() : rotation_;
     this._translation_ = translation__0;
     this._rotation_ = rotation__0;
   }
@@ -2744,9 +2744,9 @@
   };
   Pose2d.prototype.interpolate = function (other, x) {
     if (x <= 0.0) {
-      return Pose2d_init_$Create$_2(this);
+      return Pose2d_init_$Create$_3(this);
     } else if (x >= 1.0) {
-      return Pose2d_init_$Create$_2(other);
+      return Pose2d_init_$Create$_3(other);
     }var twist = Companion_getInstance_1().log(this.inverse().transformBy(other));
     return this.transformBy(Companion_getInstance_1().exp(twist.scaled(x)));
   };
@@ -2814,8 +2814,7 @@
   });
   function Pose2dWithCurvature_init_$Init$($this) {
     Pose2dWithCurvature.call($this);
-    var tmp = $this;
-    tmp._pose_ = Pose2d_init_$Create$(null, null, 3, null);
+    $this._pose_ = Pose2d_init_$Create$_0();
     $this._curvature = 0.0;
     $this._dCurvatureDs = 0.0;
     return $this;
@@ -2881,24 +2880,30 @@
   function Rotation2d_init_$Create$(x, y, normalize, $mask0, $marker) {
     return Rotation2d_init_$Init$(x, y, normalize, $mask0, $marker, Object.create(Rotation2d.prototype));
   }
-  function Rotation2d_init_$Init$_0(other, $this) {
+  function Rotation2d_init_$Init$_0($this) {
+    Rotation2d_init_$Init$(1.0, 0.0, false, 4, null, $this);
+    return $this;
+  }
+  function Rotation2d_init_$Create$_0() {
+    return Rotation2d_init_$Init$_0(Object.create(Rotation2d.prototype));
+  }
+  function Rotation2d_init_$Init$_1(other, $this) {
     Rotation2d_init_$Init$(other._cos_angle_, other._sin_angle_, false, 4, null, $this);
     return $this;
   }
-  function Rotation2d_init_$Create$_0(other) {
-    return Rotation2d_init_$Init$_0(other, Object.create(Rotation2d.prototype));
+  function Rotation2d_init_$Create$_1(other) {
+    return Rotation2d_init_$Init$_1(other, Object.create(Rotation2d.prototype));
   }
-  function Rotation2d_init_$Init$_1(direction, normalize, $this) {
+  function Rotation2d_init_$Init$_2(direction, normalize, $this) {
     Rotation2d.call($this, direction.x(), direction.y(), normalize);
     return $this;
   }
-  function Rotation2d_init_$Create$_1(direction, normalize) {
-    return Rotation2d_init_$Init$_1(direction, normalize, Object.create(Rotation2d.prototype));
+  function Rotation2d_init_$Create$_2(direction, normalize) {
+    return Rotation2d_init_$Init$_2(direction, normalize, Object.create(Rotation2d.prototype));
   }
   function Companion_4() {
     Companion_instance_3 = this;
-    var tmp = this;
-    tmp._kIdentity_1 = Rotation2d_init_$Create$(0.0, 0.0, false, 7, null);
+    this._kIdentity_1 = Rotation2d_init_$Create$_0();
   }
   Companion_4.prototype.identity = function () {
     return this._kIdentity_1;
@@ -3017,9 +3022,9 @@
   };
   Rotation2d.prototype.interpolate_1 = function (other, x) {
     if (x <= 0.0) {
-      return Rotation2d_init_$Create$_0(this);
+      return Rotation2d_init_$Create$_1(this);
     } else if (x >= 1.0) {
-      return Rotation2d_init_$Create$_0(other);
+      return Rotation2d_init_$Create$_1(other);
     }var angle_diff = this.inverse().rotateBy(other)._get_radians_();
     return this.rotateBy(Companion_getInstance_3().fromRadians(angle_diff * x));
   };
@@ -3082,6 +3087,12 @@
     configurable: true,
     get: Rotation2d.prototype._get_rotation__1
   });
+  function fromRadians(angle_radians) {
+    return Companion_getInstance_3().fromRadians(angle_radians);
+  }
+  function fromDegrees(angle_degrees) {
+    return Companion_getInstance_3().fromDegrees(angle_degrees);
+  }
   function State() {
   }
   State.$metadata$ = {
@@ -3127,7 +3138,7 @@
     var cos_angle = this.dot(a, b) / (a.norm() * b.norm());
     var tmp;
     if (isNaN_0(cos_angle)) {
-      tmp = Rotation2d_init_$Create$(0.0, 0.0, false, 7, null);
+      tmp = Rotation2d_init_$Create$_0();
     } else {
       var tmp_0 = Companion_getInstance_3();
       var tmp1_min_0 = 1.0;
@@ -3209,7 +3220,7 @@
     return Util_getInstance().epsilonEquals_0(this.x(), other.x(), epsilon) ? Util_getInstance().epsilonEquals_0(this.y(), other.y(), epsilon) : false;
   };
   Translation2d.prototype.toString = function () {
-    return '(' + format(this._x, 3) + ',' + format(this._y, 3) + ')';
+    return '' + '(' + format(this._x, 3) + ',' + format(this._y, 3) + ')';
   };
   Translation2d.prototype.toCSV_1 = function () {
     return format(this._x, 3) + ',' + format(this._y, 3);
@@ -3815,12 +3826,16 @@
   var $com$team254$lib = $com$team254.lib || ($com$team254.lib = {});
   var $com$team254$lib$geometry = $com$team254$lib.geometry || ($com$team254$lib.geometry = {});
   $com$team254$lib$geometry.Pose2d = Pose2d;
-  $com$team254$lib$geometry.Pose2d.fromXYRotation = Pose2d_init_$Create$_0;
-  $com$team254$lib$geometry.Pose2d.fromTriple = Pose2d_init_$Create$_1;
-  $com$team254$lib$geometry.Pose2d.copyOf = Pose2d_init_$Create$_2;
+  $com$team254$lib$geometry.Pose2d.identity = Pose2d_init_$Create$_0;
+  $com$team254$lib$geometry.Pose2d.fromXYRotation = Pose2d_init_$Create$_1;
+  $com$team254$lib$geometry.Pose2d.fromTriple = Pose2d_init_$Create$_2;
+  $com$team254$lib$geometry.Pose2d.copyOf = Pose2d_init_$Create$_3;
   $com$team254$lib$geometry.Rotation2d = Rotation2d;
-  $com$team254$lib$geometry.Rotation2d.copyOf = Rotation2d_init_$Create$_0;
-  $com$team254$lib$geometry.Rotation2d.fromTranslation = Rotation2d_init_$Create$_1;
+  $com$team254$lib$geometry.Rotation2d.identity = Rotation2d_init_$Create$_0;
+  $com$team254$lib$geometry.Rotation2d.copyOf = Rotation2d_init_$Create$_1;
+  $com$team254$lib$geometry.Rotation2d.fromTranslation = Rotation2d_init_$Create$_2;
+  $com$team254$lib$geometry.Rotation2d_fromRadians = fromRadians;
+  $com$team254$lib$geometry.Rotation2d_fromDegrees = fromDegrees;
   $com$team254$lib$geometry.Translation2d = Translation2d;
   $com$team254$lib$geometry.Translation2d.identity = Translation2d_init_$Create$;
   $com$team254$lib$geometry.Translation2d.copyOf = Translation2d_init_$Create$_0;

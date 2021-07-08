@@ -32,6 +32,40 @@ const splineWidth = 3;
 const kEps = 1E-9;
 const pi = Math.PI;
 
+const Colors = {
+    LIME_GREEN: "#2CFF2C",
+    LIGHT_BLUE: "#00AAFF",
+    DARK_BLUE: "#0066FF",
+}
+
+const { calcSplines } = window['splines-kt'];
+
+const {
+    Pose2d,
+    Rotation2d,
+    Rotation2d_fromDegrees,
+    Rotation2d_fromRadians,
+    Translation2d
+} = window['splines-kt'].com.team254.lib.geometry;
+
+// Client-side class extensions
+
+Rotation2d.fromDegrees = Rotation2d_fromDegrees;
+Rotation2d.fromRadians = Rotation2d_fromRadians;
+
+Object.defineProperties(Translation2d.prototype, {
+    drawX: {
+        get() {
+            return (this._x + xOffset) * (width / fieldWidth);
+        }
+    },
+    drawY: {
+        get() {
+            return height - (this._y + yOffset) * (height / fieldHeight);
+        }
+    },
+});
+
 function svg(tagName, attrs) {
     const svgNs = "http://www.w3.org/2000/svg";
     let element = document.createElementNS(svgNs, tagName);
@@ -43,7 +77,7 @@ function svg(tagName, attrs) {
     return element;
 }
 
-class Translation2d {
+/* class Translation2d {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
@@ -122,11 +156,11 @@ class Translation2d {
 		ctx.stroke();
 	}
 
-	get drawX() {
+	get drawX {
 		return (this.x + xOffset) * (width / fieldWidth);
 	}
 
-	get drawY() {
+	get drawY {
 		return height - (this.y + yOffset) * (height / fieldHeight);
 	}
 }
@@ -171,12 +205,12 @@ class Rotation2d {
         return this.sin / this.cos;
     }
 
-    getRadians() {
+    radians {
         return Math.atan2(this.sin, this.cos);
     }
 
-    getDegrees() {
-        return r2d(this.getRadians());
+    degrees {
+        return r2d(this.radians);
     }
 
     rotateBy(other) {
@@ -198,12 +232,12 @@ class Rotation2d {
         } else if (x >= 1) {
             return new Rotation2d(other.cos, other.sin, other.normalize);
         }
-        let angle_diff = this.inverse().rotateBy(other).getRadians();
+        let angle_diff = this.inverse().rotateBy(other).radians;
         return this.rotateBy(Rotation2d.fromRadians(angle_diff * x));
     }
 
     distance(other) {
-        return this.inverse().rotateBy(other).getRadians();
+        return this.inverse().rotateBy(other).radians;
     }
 }
 
@@ -232,7 +266,7 @@ class Pose2d {
     }
 
     static log(transform) {
-        let dtheta = transform.getRotation().getRadians();
+        let dtheta = transform.getRotation().radians;
         let half_dtheta = 0.5 * dtheta;
         let cos_minus_one = transform.getRotation().cos() - 1.0;
         let halftheta_by_tan_of_halfdtheta;
@@ -298,7 +332,7 @@ class Pose2d {
 
 		ctx.beginPath();
 		ctx.moveTo(x, y);
-		ctx.lineTo(x + 25 * Math.cos(-this.rotation.getRadians()), y + 25 * Math.sin(-this.rotation.getRadians()));
+		ctx.lineTo(x + 25 * Math.cos(-this.rotation.radians), y + 25 * Math.sin(-this.rotation.radians));
 		ctx.lineWidth = 3;
 		ctx.stroke();
         ctx.closePath();
@@ -328,7 +362,7 @@ class Pose2d {
         this.translation.translate(other.translation);
         this.rotation.rotate(other.rotation);
     }
-}
+} */
 
 function d2r(d) {
     return d * (Math.PI / 180);
@@ -368,11 +402,34 @@ function drawRobot(position, heading) {
     let points = [];
 
     angles.forEach(function(angle) {
-        let point = new Translation2d(position.translation.x + (r * Math.cos(angle)),
-            position.translation.y + (r * Math.sin(angle)));
+        const point = new Translation2d(position.translation._x + (r * Math.cos(angle)),
+            position.translation._y + (r * Math.sin(angle)));
         points.push(point);
-        point.draw(Math.abs(angle - heading) < pi / 2 ? "#00AAFF" : "#0066FF", splineWidth);
+        drawPoint(
+            point,
+            {
+                color: Math.abs(angle - heading) < pi / 2 ? Colors.LIGHT_BLUE : Colors.DARK_BLUE,
+                radius: splineWidth
+            }
+        );
     });
+}
+
+function drawPoint(point, { color = Colors.LIME_GREEN, radius }) {
+    ctx.beginPath();
+    ctx.arc(point.drawX, point.drawY, radius, 0, 2 * Math.PI, false);
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+    ctx.fill();
+    ctx.lineWidth = 0;
+    ctx.stroke();
+}
+
+function fixWidthHelper(e, ui) {
+    ui.children().each(function() {
+        $(this).width($(this).width());
+    });
+    return ui;
 }
 
 function init() {
@@ -430,6 +487,12 @@ function init() {
             saveFile();
         }
     })
+
+    $('table tbody').sortable({
+        helper: fixWidthHelper,
+        update: update,
+        forcePlaceholderSize: true,
+    }).disableSelection();
 
     rebind();
 }
@@ -530,8 +593,8 @@ function handleWaypointDrag(event) {
         selectedWaypoint.setAttribute("cy", canvasY);
         let index = selectedWaypoint.getAttribute('data-index');
         let { x, y } = canvasToFieldCoords(canvasX, canvasY);
-        waypoints[index].translation.x = x;
-        waypoints[index].translation.y = y;
+        waypoints[index].translation._x = x;
+        waypoints[index].translation._y = y;
 
         recalculateSplines(waypoints, 4);
     }
@@ -620,33 +683,38 @@ function update(modified = true) {
     recalculateSplines(waypoints, 2);
 }
 
+// const worker = new Worker('/resources/js/worker.js');
+
+// Type information / object prototypes are lost in postMessage
+function deserializePoints(serializedPoints) {
+    return serializedPoints.map(p =>
+        new Pose2d(
+            new Translation2d(p._translation_._x, p._translation_._y),
+            new Rotation2d(p._rotation_._cos_angle_, p._rotation_._sin_angle)
+        )
+    );
+}
+
+function calculateAndParseSplines(inputPoints) {
+    const splineData = calcSplines(inputPoints);
+    if (splineData === 'no') return [];
+    let points = JSON.parse(splineData).points;
+    let result = [];
+    for (const point of points) {
+        result.push(new Pose2d(new Translation2d(point.x, point.y), Rotation2d_fromRadians(point.rotation)));
+    }
+    return result;
+}
+
 function recalculateSplines(waypointsList, drawStyle) {
     const orderedWaypoints = isReversedCheckbox.checked ? waypointsList.slice(0).reverse() : waypointsList;
     const data = orderedWaypoints.map(point => (
-        `${point.translation.x},${point.translation.y},${Math.round(point.rotation.getDegrees())}`
+        `${point.translation.x},${point.translation.y},${Math.round(point.rotation.degrees)}`
     )).join(';');
 
     if (data.length !== 0) {
-        $.post({
-            url: "api/calculate_splines",
-            data: data,
-            success: function (splineData) {
-                if (splineData === "no") {
-                    return;
-                }
-
-                // console.log(splineData);
-
-                let points = JSON.parse(splineData).points;
-
-                splinePoints = [];
-                for (const point of points) {
-                    splinePoints.push(new Pose2d(new Translation2d(point.x, point.y), Rotation2d.fromRadians(point.rotation)));
-                }
-
-                draw(drawStyle);
-            }
-        });
+        splinePoints = calculateAndParseSplines(orderedWaypoints);
+        draw(drawStyle);
     }
 }
 
@@ -661,9 +729,24 @@ function changeField(val) {
 
 function drawWaypoints() {
 	waypoints.forEach((waypoint, i) => {
-        waypoint.drawInteractive(waypointRadius, i);
-        drawRobot(waypoint, waypoint.rotation.getRadians());
+        drawInteractivePoint(waypoint, waypointRadius, i);
+        drawRobot(waypoint, waypoint.rotation.radians);
     });
+}
+
+function drawInteractivePoint(waypoint, radius, index) {
+    let point = svg('circle', {
+        fill: Colors.LIME_GREEN,
+        cx: waypoint.translation.drawX,
+        cy: waypoint.translation.drawY,
+        r: radius,
+        'data-index': index,
+    });
+
+    point.addEventListener('mousedown', handleWaypointDragStart);
+    point.addEventListener('click', handleWaypointClick);
+
+    interactive.appendChild(point);
 }
 
 let animation;
@@ -677,12 +760,13 @@ function drawSplines(fill, animate) {
     let i = 0;
 
     if (animate) {
-        clearInterval(animation);
+        let requestId;
+        cancelAnimationFrame(animation);
 
-        animation = setInterval(function() {
+        function animLoop() {
             if (i === splinePoints.length) {
                 animating = false;
-                clearInterval(animation);
+                cancelAnimationFrame(animation);
                 return;
             }
 
@@ -692,22 +776,25 @@ function drawSplines(fill, animate) {
             let hue = Math.round(180 * (i++ / splinePoints.length));
 
             let previous = ctx.globalCompositeOperation;
-            fillRobot(splinePoint, splinePoint.rotation.getRadians(), 'hsla(' + hue + ', 100%, 50%, 0.025)');
+            fillRobot(splinePoint, splinePoint.rotation.radians, 'hsla(' + hue + ', 100%, 50%, 0.025)');
             ctx.globalCompositeOperation = "source-over";
-            drawRobot(splinePoint, splinePoint.rotation.getRadians());
-            splinePoint.draw(false, splineWidth);
+            drawRobot(splinePoint, splinePoint.rotation.radians);
+            drawPoint(splinePoint.translation, { radius: splineWidth });
             ctx.globalCompositeOperation = previous;
-        }, 25);
+
+            animation = requestAnimationFrame(animLoop);
+        }
+        animation = requestAnimationFrame(animLoop)
     } else {
-        splinePoints.forEach(function(splinePoint) {
-            splinePoint.draw(false, splineWidth);
+        splinePoints.forEach((splinePoint) => {
+            drawPoint(splinePoint.translation, { radius: splineWidth });
 
             if (fill) {
                 let index = isReversedCheckbox.checked ? (splinePoints.length - i++) : i++;
                 let hue = Math.round(180 * (index / splinePoints.length));
-                fillRobot(splinePoint, splinePoint.rotation.getRadians(), 'hsla(' + hue + ', 100%, 50%, 0.025)');
+                fillRobot(splinePoint, splinePoint.rotation.radians, 'hsla(' + hue + ', 100%, 50%, 0.025)');
             } else {
-                drawRobot(splinePoint, splinePoint.rotation.getRadians());
+                drawRobot(splinePoint, splinePoint.rotation.radians);
             }
         });
     }
@@ -739,7 +826,7 @@ function showToast(toastEl) {
 function generateWaypointsList() {
     return 'List.of(\n' +
         waypoints.map((waypoint, i, arr) =>
-            `\tnew Pose2d(${waypoint.translation.x}, ${waypoint.translation.y}, ${Math.round(waypoint.rotation.getDegrees())})`
+            `\tnew Pose2d(${waypoint.translation.x}, ${waypoint.translation.y}, ${Math.round(waypoint.rotation.degrees)})`
             + (i === arr.length - 1 ? '' : ',')
             + (waypoint.comment && ` // ${waypoint.comment}`)
         ).join('\n') +
@@ -841,7 +928,7 @@ function generateCSV() {
         waypoints.map(point => ({
             x: point.translation.x,
             y: point.translation.y,
-            heading: Math.round(point.rotation.getDegrees()),
+            heading: Math.round(point.rotation.degrees),
         })),
         isReversedCheckbox.checked
     );
