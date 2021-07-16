@@ -537,11 +537,12 @@ function showToast(toastEl) {
 }
 
 function generateWaypointsList() {
+    console.log(waypoints[0].comment);
     return 'List.of(\n' +
         waypoints.map((waypoint, i, arr) =>
-            `\tnew Pose2d(${waypoint.translation.x}, ${waypoint.translation.y}, ${Math.round(waypoint.rotation.degrees)})`
+            `\tnew Pose2d(${waypoint.translation.x()}, ${waypoint.translation.y()}, ${Math.round(waypoint.rotation.degrees)})`
             + (i === arr.length - 1 ? '' : ',')
-            + (waypoint.comment && ` // ${waypoint.comment}`)
+            + (waypoint.comment ? ` // ${waypoint.comment}` : '')
         ).join('\n') +
         '\n)';
 }
