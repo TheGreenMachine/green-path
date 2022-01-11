@@ -20,8 +20,8 @@ const fieldHeight = 324; // inches
 const xOffset = 0; // inches
 const yOffset = 0; // inches
 
-const width = 2024; //pixels
-const height = 1024; //pixels
+const width = 980; //pixels
+const height = 496; //pixels
 
 const robotWidth = 34; // inches
 const robotHeight = 34; // inches
