@@ -14,17 +14,17 @@ let interactive;
 let clipboardToast;
 let isReversedCheckbox;
 
-const fieldWidth = 648; // inches
-const fieldHeight = 324; // inches
+const fieldWidth = 1654; // cm
+const fieldHeight = 802; // cm
 
-const xOffset = 0; // inches
-const yOffset = 0; // inches
+const xOffset = 0; // cm
+const yOffset = 0; // cm
 
 const width = 980; //pixels
 const height = 496; //pixels
 
-const robotWidth = 34; // inches
-const robotHeight = 34; // inches
+const robotWidth = 86; // cm
+const robotHeight = 86; // cm
 
 const waypointRadius = 7;
 const splineWidth = 3;
@@ -540,7 +540,7 @@ function generateWaypointsList() {
     console.log(waypoints[0].comment);
     return 'List.of(\n' +
         waypoints.map((waypoint, i, arr) =>
-            `\tnew Pose2d(${waypoint.translation.x()}, ${waypoint.translation.y()}, Rotation2d.fromDegrees(${Math.round(waypoint.rotation.degrees)}))`
+            `\tnew Pose2d(${waypoint.translation.x() / 100.0}, ${waypoint.translation.y() / 100.0}, Rotation2d.fromDegrees(${Math.round(waypoint.rotation.degrees)}))`
             + (i === arr.length - 1 ? '' : ',')
             + (waypoint.comment ? ` // ${waypoint.comment}` : '')
         ).join('\n') +
