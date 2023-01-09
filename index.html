@@ -13,7 +13,7 @@
         <link href='./resources/css/style.css' rel='stylesheet'>
     </head>
     <body onload='init()'>
-        <input id='title' placeholder='Title' disabled>
+        <input id='title' placeholder='GreenPath' disabled>
         <div id='canvases'>
             <canvas id='background'></canvas>
             <canvas id='field'></canvas>
@@ -33,7 +33,7 @@
             <button id="saveAsButton" onclick="saveFileAs()" class="btn-pair-right">Save As</button>
             <div class="spacer"></div>
             <select onchange='changeField(this.value)'>
-                <option value="season" selected>Infinite Recharge</option>
+                <option value="season" selected>Charged Up</option>
                 <option value="6_field2">6_field2</option>
                 <option value="7_field1">7_field1</option>
                 <option value="7_field2">7_field2</option>
@@ -48,7 +48,7 @@
                 <th></th>
                 <th>X</th>
                 <th>Y</th>
-                <th>Heading</th>
+                <th>Rotation (Heading)</th>
                 <th>Comments</th>
                 <th>Enabled</th>
                 <th>Delete</th>
