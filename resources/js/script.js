@@ -13,15 +13,17 @@ let titleInput;
 let interactive;
 let clipboardToast;
 let isReversedCheckbox;
+let lastFieldChosen = "season";
+let isSmallField;
 
-const fieldWidth = 1654; // cm
-const fieldHeight = 802; // cm
+let fieldWidth = 1654; // cm
+let fieldHeight = 802; // cm
 
 const xOffset = 0; // cm
 const yOffset = 0; // cm
 
-const width = 980; //pixels
-const height = 496; //pixels
+let width = 980; //pixels
+let height = 496; //pixels
 
 const robotWidth = 86; // cm
 const robotHeight = 86; // cm
@@ -145,7 +147,25 @@ function fixWidthHelper(e, ui) {
     return ui;
 }
 
-function init() {
+function initRefresh(usingSmallField, fieldName) {
+    if (usingSmallField) {
+        fieldWidth = 912; // cm
+        fieldHeight = 823; // cm
+        
+        width = 1120; //pixels
+        height = 1110; //pixels
+    } else {
+        fieldWidth = 1654; // cm
+        fieldHeight = 802; // cm
+        
+        width = 980; //pixels
+        height = 496; //pixels
+    }
+
+    init(fieldName);
+}
+
+function init(fieldName) {
     let field = $('#field');
     let background = $('#background');
     let canvases = $('#canvases');
@@ -181,7 +201,7 @@ function init() {
     interactive.addEventListener('click', onCanvasClick);
 
 	image = new Image();
-	image.src = 'resources/img/season.jpg';
+	image.src = `resources/img/${fieldName}.jpg`;
 	image.onload = function() {
 		ctxBackground.drawImage(image, 0, 0, width, height);
 		update(false);
@@ -434,10 +454,15 @@ function recalculateSplines(waypointsList, drawStyle) {
 function changeField(val) {
     console.log(val);
 	image.src = `resources/img/${val}.jpg`
+    if  (val == "minnetrials" || lastFieldChosen == "minnetrials") {
+        isSmallField = val == "minnetrials" ? true : false;
+        initRefresh(isSmallField, val);
+     }
     image.onload(() => {
         ctx.drawImage(image, 0, 0, width, height);
         update(false);
     });
+    lastFieldChosen = val;
 }
 
 function drawWaypoints() {

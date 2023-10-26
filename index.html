@@ -12,7 +12,7 @@
         <link rel='shortcut icon' href='./resources/favicon.png' />
         <link href='./resources/css/style.css' rel='stylesheet'>
     </head>
-    <body onload='init()'>
+    <body onload='init("season")'>
         <input id='title' placeholder='GreenPath' disabled>
         <div id='canvases'>
             <canvas id='background'></canvas>
@@ -34,6 +34,7 @@
             <div class="spacer"></div>
             <select onchange='changeField(this.value)'>
                 <option value="season" selected>Charged Up</option>
+                <option value="minnetrials">Corn Conundrum</option>
                 <option value="6_field2">6_field2</option>
                 <option value="7_field1">7_field1</option>
                 <option value="7_field2">7_field2</option>
