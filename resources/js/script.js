@@ -19,6 +19,16 @@ let isSmallField;
 let fieldWidth = 1654; // cm
 let fieldHeight = 802; // cm
 
+// Instant path elements
+let instantPathDialog;
+let sampleRateSelector;
+let sampleRate;
+let startSelector;
+let timeFrom;
+let durationSelector;
+let duration;
+let wpiLogInput;
+
 const xOffset = 0; // cm
 const yOffset = 0; // cm
 
@@ -214,6 +224,37 @@ function init(fieldName) {
     waypointsOutput = document.getElementById('waypointsOutput');
     clipboardToast = document.getElementById('clipboardToast');
 
+    instantPathDialog = document.getElementById('instantPathDialog')
+    sampleRateSelector = document.getElementById('sampleRateSelector');
+    startSelector = document.getElementById('startSelector')
+    durationSelector = document.getElementById('durationSelector')
+    wpiLogInput = document.getElementById('wpiLogInput')
+
+    sampleRate = parseFloat(sampleRateSelector.value)
+    timeFrom = parseInt(startSelector.value);
+    duration = parseInt(durationSelector.value);
+
+    wpiLogInput.addEventListener('change', handleWPILog);
+
+    sampleRateSelector.oninput = () => {
+        sampleRate = parseFloat(sampleRateSelector.value);
+        console.log("Sample rate set to " + sampleRate)
+    }
+
+    startSelector.oninput = () => {
+        timeFrom = parseInt(startSelector.value);
+        console.log("Will start from " + timeFrom + " seconds")
+    }
+
+    durationSelector.oninput = () => {
+        duration = parseInt(durationSelector.value);
+        if (duration>15) { // Locked to 15 because autos are only 15s long
+            duration = 15;
+        }
+        console.log("Will go for " + duration + " seconds and will end at " + (duration + timeFrom) + " seconds")
+    }
+
+    
     document.addEventListener('keydown', (e) => {
         if (e.code === 'KeyS' && (e.ctrlKey || e.metaKey)) {
             e.preventDefault();
@@ -536,6 +577,24 @@ function drawSplines(fill, animate) {
             }
         });
     }
+}
+
+function showInstantPathInput() {
+    instantPathDialog.showModal();
+}
+
+function generatePointsFromFile() {
+    decodeWPILOG(dataAsUint8, timeFrom, (duration + timeFrom), sampleRate);
+    waypoints = [];
+    $('tbody').empty();    
+    pointsToGenerate.forEach(
+        (waypoint) => {
+            console.log(typeof waypoint[0])
+            _addPoint(waypoint[0] * 100,waypoint[1] * 100,waypoint[2]);
+        }
+    )
+    update(false);
+    rebind();
 }
 
 function showWaypointsList() {

@@ -5,9 +5,13 @@
 
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
         <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+
+        <script type='text/javascript' src='./resources/js/wpilogutil/WPILOGDecoder.js'></script>
+        <script type='text/javascript' src='./resources/js/wpilogutil/parser.js'></script>
+
         <script type='text/javascript' src='./resources/js/splines-kt.js'></script>
         <script type='text/javascript' src='./resources/js/script.js' async defer></script>
-
+        
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel='shortcut icon' href='./resources/favicon.png' />
         <link href='./resources/css/style.css' rel='stylesheet'>
@@ -24,6 +28,8 @@
             <button onclick='update(false)' class="icon-button" title="Refresh"><i class="material-icons">refresh</i></button>
             <button onclick='draw(3)' class="icon-button" title="Animate"><i class="material-icons">play_arrow</i></button>
             <button onclick="showWaypointsList()">Waypoints Code</button>
+            <button onclick="showInstantPathInput()">Instant Path</button>
+            <button onclick="showHeadingsList()">Swerve Headings</button>
             <button id="resetButton" onclick="restoreFromFile()" class="icon-button" title="Restore from file"><i class="material-icons">sync</i></button>
             <button id="openButton" onclick="openFile()" class="btn-pair-left">Open</button>
             <button id="saveButton" onclick="saveFile()" class="btn-pair-center">
@@ -76,5 +82,23 @@
             <pre onclick="copyToClipboard()"><code id="waypointsOutput"></code></pre>
         </dialog>
         <div class="toast" id="clipboardToast">Copied to clipboard!</div>
-    </body>
+
+        <dialog id="instantPathDialog">
+            <button onclick='this.parentElement.close()' class="close-button">&times;</button>
+            <input type="file" id="wpiLogInput" name="wpiLogInput" accept=".wpilog">
+            <p></p>
+            <label for="sampleRateSelector">Sample rate (seconds)</label>
+            <input type = "number" id="sampleRateSelector" name="sampleRateSelector" step="0.01" value="0.5">
+            <p></p>
+            <label for="startSelector">Time to start from (seconds)</label>
+            <input type = "number" id="startSelector" name="startSelector" step="1" value="0">
+            <p></p>
+            <label for="durationSelector">Duration (seconds)</label> 
+            <input type = "number" id="durationSelector" name="durationSelector" step="1" value="5">
+            <p></p>                        
+            <button class="btn" onclick="generatePointsFromFile()">Generate</button> 
+                     
+        </dialog>
+
+        </body>
 </html>
