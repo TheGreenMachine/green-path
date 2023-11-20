@@ -193,7 +193,7 @@ td > input:not([type=checkbox]) {
 }
 
 .buttonContainer {
-	width: 828px;
+	width: 970px;
 	margin: 10px auto;
     display: flex;
     align-items: center;
@@ -264,7 +264,7 @@ select {
     color: var(--text-color);
 }
 
-#waypointsDialog {
+#waypointsDialog, #swerveHeadingsDialog, #instantPathDialog {
     position: fixed;
     top: 0;
     border: 1px solid var(--border-color);

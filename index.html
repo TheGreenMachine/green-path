@@ -83,7 +83,13 @@
         </dialog>
         <div class="toast" id="clipboardToast">Copied to clipboard!</div>
 
+        <dialog id="swerveHeadingsDialog">
+            <button onclick='this.parentElement.close()' class="close-button">&times;</button>
+            <h3>Swerve Headings List</h3>
+            <pre onclick="copyToClipboard()"><code id="swerveHeadingsOutput"></code></pre>
+        </dialog>
         <dialog id="instantPathDialog">
+            <h3>Autopath generation from .wpilog file</h3>
             <button onclick='this.parentElement.close()' class="close-button">&times;</button>
             <input type="file" id="wpiLogInput" name="wpiLogInput" accept=".wpilog">
             <p></p>
@@ -97,7 +103,6 @@
             <input type = "number" id="durationSelector" name="durationSelector" step="1" value="5">
             <p></p>                        
             <button class="btn" onclick="generatePointsFromFile()">Generate</button> 
-                     
         </dialog>
 
         </body>

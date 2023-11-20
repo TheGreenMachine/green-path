@@ -9,6 +9,8 @@ let change = "propertychange change input";
 let animating = false;
 let waypointsOutput;
 let waypointsDialog;
+let swerveHeadingsOutput;
+let swerveHeadingsDialog;
 let titleInput;
 let interactive;
 let clipboardToast;
@@ -221,7 +223,9 @@ function init(fieldName) {
 
     isReversedCheckbox = document.getElementById('isReversed');
     waypointsDialog = document.getElementById('waypointsDialog');
+    swerveHeadingsDialog = document.getElementById('swerveHeadingsDialog')
     waypointsOutput = document.getElementById('waypointsOutput');
+    swerveHeadingsOutput = document.getElementById('swerveHeadingsOutput')
     clipboardToast = document.getElementById('clipboardToast');
 
     instantPathDialog = document.getElementById('instantPathDialog')

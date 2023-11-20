@@ -144,8 +144,8 @@ function fixPoseDecimals(pose) {
 
 // Waypoints visual
 function showHeadingsList() {
-    waypointsOutput.textContent = generateHeadingsSwerve();
-    waypointsDialog.showModal();
+    swerveHeadingsOutput.textContent = generateHeadingsSwerve();
+    swerveHeadingsDialog.showModal();
 }
 
 function generateHeadingsSwerve() {
