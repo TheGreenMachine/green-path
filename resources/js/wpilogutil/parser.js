@@ -2,9 +2,6 @@ let pointsToGenerate = [];
 let swerveHeadings = [];
 let dataAsUint8;
 
-const kMaxVelocity = 3.75; // m/s
-
-
 function makesure() {
     console.log('worked!')
 }
@@ -40,6 +37,8 @@ function decodeWPILOG(logData, timeStart, timeTo, sampleRate) {
     let headingCalculationStarted = false;
 
     let lastTime = 0;
+    
+    let poseEntryNum;
 
     pointsToGenerate = []
     swerveHeadings = []
@@ -47,43 +46,21 @@ function decodeWPILOG(logData, timeStart, timeTo, sampleRate) {
     decoder.forEach((record) => {
         try {
             let timestamp = record.getTimestamp() / 1000000; //Convert from microseconds to seconds
-            let poseValue = record.getDoubleArray();
-
-            if (poseValue != false && ( // If poseValue is a Double array, check if it's both a pose entry and has valid values
-                poseValue.length!= 3 ||
-                poseValue[0] <= 0 || 
-                poseValue[1] <= 0
-            )) {
-                poseValue = false;
+            let poseValue;
+            if (record.isStart() && record.getString().includes("Drivetrain/Pose")) { //Locate pose entry number
+                poseEntryNum = record.getStartData().entry;
             }
 
-            if (poseValue != false 
-                && timestamp >= timeStart 
-                && timestamp <= timeTo
-                && timestamp - lastTime > sampleRate
-                ) {
-                    let velocityLegal = true;
-                
-                    if (poses.length) {
-                        // WPILog sometimes puts in random weird values in the middle of valid ones. 
-                            // using advantagescope to make the log smaller actually hurts more than it helps- removes precision
-                        // So we need to make sure that all changes are physically possible in that amount of time
-                        
-                        let vectorDisplacement = Math.sqrt(
-                            Math.pow(poseValue[0]-lastPoseRecorded[0], 2) + // ∆x^2
-                            Math.pow(poseValue[1]-lastPoseRecorded[1], 2) // ∆y^2
-                        )
-                        let velocity = vectorDisplacement / sampleRate; // distance/time
-                        
-                        //TODO This check is only reliable for samplerate [0.5,1), need a better algorithm for detecting outliers
-                        if (velocity > kMaxVelocity) {
-                            console.log("Velocity of " + velocity + "m/s physically impossible, skipping value.")
-                            velocityLegal = false;
-                        } 
-                    }
+            if (record.getDoubleArray() != false && record.getEntry() == poseEntryNum) { //Only do work if it's a pose entry
+                poseValue = record.getDoubleArray();
+                let valueInvalid = poseValue[0] <= 0 || poseValue[1] <= 0
 
-                    if (velocityLegal) {
-                        if (headingCalculationStarted) { // Heading calculation routine
+                if (!valueInvalid
+                    && timestamp >= timeStart 
+                    && timestamp <= timeTo
+                    && timestamp - lastTime >= sampleRate
+                ) {
+                    if (headingCalculationStarted) { // Heading calculation routine
                             console.log("pushing " + poseValue[2] + " to swerveheadings: ")
                             swerveHeadings.push(poseValue[2]);
 
@@ -104,13 +81,11 @@ function decodeWPILOG(logData, timeStart, timeTo, sampleRate) {
                         lastTime = timestamp;
 
                         lastPoseRecorded = poseValue;
-                    }
+                }
             }
-            
-
         } catch (error) {
             // Handle decoding errors
-            console.error(`Error decoding column data: ${error}`);
+            console.error(`Error decoding data: ${error}`);
         }
     });
 
