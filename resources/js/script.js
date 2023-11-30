@@ -594,10 +594,10 @@ function generatePointsFromFile() {
     pointsToGenerate.forEach(
         (waypoint) => {
             //console.log(typeof waypoint[0])
-            _addPoint(waypoint[0] * 100,waypoint[1] * 100,waypoint[2]);
+            _addPoint(waypoint[0] * 100,waypoint[1] * 100,waypoint[2], false);
         }
     )
-    update(false);
+    update(true);
     rebind();
 }
 
