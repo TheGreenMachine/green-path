@@ -593,7 +593,7 @@ function generatePointsFromFile() {
     $('tbody').empty();    
     pointsToGenerate.forEach(
         (waypoint) => {
-            console.log(typeof waypoint[0])
+            //console.log(typeof waypoint[0])
             _addPoint(waypoint[0] * 100,waypoint[1] * 100,waypoint[2]);
         }
     )
