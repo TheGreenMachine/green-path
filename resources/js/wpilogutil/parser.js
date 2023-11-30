@@ -2,10 +2,6 @@ let pointsToGenerate = [];
 let swerveHeadings = [];
 let dataAsUint8;
 
-function makesure() {
-    console.log('worked!')
-}
-
 async function handleWPILog(event) {
     const file = event.target.files[0];
 
@@ -23,7 +19,7 @@ async function handleWPILog(event) {
 
     dataAsUint8 = await readFileAsync(file);
 
-    console.log(decodeWPILOG(dataAsUint8, timeFrom, (duration + timeFrom), sampleRate))
+    //console.log(decodeWPILOG(dataAsUint8, timeFrom, (duration + timeFrom), sampleRate))
 }
 
 //Decoding 
@@ -61,22 +57,22 @@ function decodeWPILOG(logData, timeStart, timeTo, sampleRate) {
                     && timestamp - lastTime >= sampleRate
                 ) {
                     if (headingCalculationStarted) { // Heading calculation routine
-                            console.log("pushing " + poseValue[2] + " to swerveheadings: ")
+                            //console.log("pushing " + poseValue[2] + " to swerveheadings: ")
                             swerveHeadings.push(poseValue[2]);
 
                             poseValue[2] = calcAngleBetweenPoints(lastPoseRecorded, poseValue);
-                            console.log("Tank heading: " + calcAngleBetweenPoints(lastPoseRecorded, poseValue) )
+                            //console.log("Tank heading: " + calcAngleBetweenPoints(lastPoseRecorded, poseValue) )
                         } else { // First heading calculation
-                            console.log("pushing " + poseValue[2] + "to swerveheadings.")
+                            //console.log("pushing " + poseValue[2] + "to swerveheadings.")
                             swerveHeadings.push(poseValue[2]);
                             poseValue[2] = 0;
-                            console.log("1st tank heading : " + poseValue[2]);
+                            //console.log("1st tank heading : " + poseValue[2]);
                             headingCalculationStarted = true;
                         }
 
                         poses.push(fixPoseDecimals(poseValue))
-                        console.log(timestamp)
-                        console.log(fixPoseDecimals(poseValue))
+                        //console.log(timestamp)
+                        //console.log(fixPoseDecimals(poseValue))
 
                         lastTime = timestamp;
 
@@ -94,16 +90,16 @@ function decodeWPILOG(logData, timeStart, timeTo, sampleRate) {
 
     poses.forEach((point) => {
         if (point[0] == lastPushedPoint[0] && point[1] == lastPushedPoint[1]) { // remove duplicates
-            console.log("Duplicate point " + point.join())
+            //console.log("Duplicate point " + point.join())
         } else { // push-non duplicates, update last pushed point
-            console.log("Pushing point " + point.join())
+            //console.log("Pushing point " + point.join())
             pointsToPush.push(point)
             lastPushedPoint = point;
         }
     });
     pointsToGenerate = pointsToPush; 
     
-    console.log(pointsToPush)
+    //console.log(pointsToPush)
 }
 
 //Util
@@ -124,7 +120,7 @@ function showHeadingsList() {
 }
 
 function generateHeadingsSwerve() {
-    console.log(swerveHeadings.join())
+    //console.log(swerveHeadings.join())
     return 'List.of(\n' +
         swerveHeadings.map((waypoint, i, arr) =>
             `\ Rotation2d.fromDegrees(${Math.round(waypoint)})`
