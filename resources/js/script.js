@@ -34,10 +34,10 @@ let wpiLogInput;
 const xOffset = 0; // cm
 const yOffset = 0; // cm
 
-let width = 980; //pixels
-let height = 496; //pixels
+let width = 1220; //pixels
+let height = 550; //pixels
 
-const robotWidth = 86; // cm
+const robotWidth = 86; // cm TODO need length/width W bumpers
 const robotHeight = 86; // cm
 
 const waypointRadius = 7;
