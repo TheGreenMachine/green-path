@@ -37,8 +37,8 @@ const yOffset = 0; // cm
 let width = 1220; //pixels
 let height = 550; //pixels
 
-const robotWidth = 86; // cm TODO need length/width W bumpers
-const robotHeight = 86; // cm
+const robotWidth = 89; // cm
+const robotHeight = 89; // cm
 
 const waypointRadius = 7;
 const splineWidth = 3;
