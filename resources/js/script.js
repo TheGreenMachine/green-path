@@ -19,7 +19,7 @@ let lastFieldChosen = "season";
 let isSmallField;
 
 let fieldWidth = 1654; // cm
-let fieldHeight = 802; // cm
+let fieldHeight = 821; // cm
 
 // Instant path elements
 let instantPathDialog;
@@ -34,8 +34,8 @@ let wpiLogInput;
 const xOffset = 0; // cm
 const yOffset = 0; // cm
 
-let width = 1220; //pixels
-let height = 550; //pixels
+let width = 1303; //pixels
+let height = 647; //pixels
 
 const robotWidth = 89; // cm
 const robotHeight = 89; // cm
