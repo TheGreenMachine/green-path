@@ -34,8 +34,11 @@ html {
 	border-bottom: #aaa solid 1px;
 	text-align: center;
 	width: 500px;
+    	background-color: transparent;
+}
+
+#titletext {
 	color: white;
-    background-color: transparent;
 }
 
 #title, #title:focus {
