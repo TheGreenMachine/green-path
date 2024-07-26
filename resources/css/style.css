@@ -27,6 +27,7 @@ html {
 
 #title {
 	font-size: 28px;
+	padding-bottom: none;
 	border-bottom: #aaa solid 1px;
 	text-align: center;
 	width: 500px;
