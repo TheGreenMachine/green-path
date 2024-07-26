@@ -37,6 +37,7 @@ html {
 
 #titletext {
 	color: white;
+	font-weight: bold;
 }
 
 #title, #title:focus {
