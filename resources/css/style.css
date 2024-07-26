@@ -34,7 +34,7 @@ html {
 	border-bottom: #aaa solid 1px;
 	text-align: center;
 	width: 500px;
-	color: var(--text-color);
+	color: white;
     background-color: transparent;
 }
 
