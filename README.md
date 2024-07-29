@@ -1,5 +1,5 @@
-# Cheesy Path
-Cheesy Path, a front-end webapp, is used for fast, intuitive point-and-click path creation.
+# Green Path
+Green Path, a front-end webapp, is used for fast, intuitive point-and-click path creation.
 
 The app is available at https://thegreenmachine.github.io/cheesy-path/.
 Using Intellij we can use the "built-in preview" functionality instead - just open index.html and click on the little intellij symbol that should pop up in the top-right corner!
