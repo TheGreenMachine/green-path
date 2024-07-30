@@ -2,13 +2,14 @@
     --background-100: #f5f5f5;
     --background-0: #fff;
     --text-color: #232323;
-    --border-color: #005826;
+    --border-color: #ccc;
     --background-contrast: rgb(48, 48, 54);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --background-color: #005826;
+        --background-100: rgb(32, 32, 36);
+        --background-0: rgb(48, 48, 54);
         --background-contrast: #f5f5f5;
         --border-color: #232323;
         --text-color: #fdfdfd;
@@ -20,7 +21,7 @@
 }
 
 html {
-    background-color: #005826;
+    background-color: var(--background-100);
     color: var(--text-color);
 }
 
