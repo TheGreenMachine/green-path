@@ -43,7 +43,7 @@ html {
 }
 
 #title:focus {
-    border-color: #0070FF;
+    border-color: #005826;
 }
 
 #canvases {
@@ -72,7 +72,7 @@ svg circle {
 }
 
 svg circle[data-selected] {
-    stroke: #0070FF;
+    stroke: #005826;
     r: 16;
     stroke-width: 2;
 }
@@ -87,7 +87,7 @@ table {
 }
 
 thead {
-	background-color: #0070FF;
+	background-color: #005826;
 	color: white;
 }
 
@@ -141,7 +141,7 @@ td>input {
 }
 
 td>input:focus {
-    border-color: #0070FF;
+    border-color: #005826;
 }
 
 td > input:not([type=checkbox]) {
@@ -205,7 +205,7 @@ td > input:not([type=checkbox]) {
 }
 
 button, .btn {
-	background-color: #0070FF;
+	background-color: #005826;
 	border: none;
 	padding: 4px 12px;
 	border-radius: 4px;
