@@ -179,7 +179,7 @@ td > input:not([type=checkbox]) {
 }
 
 .enabled>button:hover {
-    background-color: #005826;
+    background-color: #008B3C;
 }
 
 .delete>button {
@@ -189,7 +189,7 @@ td > input:not([type=checkbox]) {
 }
 
 .delete>button:hover, .delete>button:focus-visible {
-	background-color: #005826;
+	background-color: #008B3C;
 }
 
 .buttonContainer {
@@ -301,7 +301,7 @@ pre, code {
 }
 
 .close-button:hover {
-    background-color: #005826;
+    background-color: #008B3C;
     color: white;
 }
 
