@@ -8,6 +8,7 @@ Using Intellij we can use the "built-in preview" functionality instead - just op
 $ git clone https://github.com/TheGreenMachine/green-path.git
 $ npx http-server # Or any other http-server - Note: this is if you're NOT using intellij's built-in preview
 ```
+As this is a static webapp, you can also use VSCode's Live Server extension in order to run the server.
 
 ## Path generation from log files
 To generate an auto path from a .wpilog file, click the "Instant Path" button. Proceed to input your log file, the time you wish to start from, the duration, and the sample rate (ex. sample rate of 0.5 =  2 samples/second, 0.1 = 10 samples/second). 
