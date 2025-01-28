@@ -30,12 +30,13 @@ let timeFrom;
 let durationSelector;
 let duration;
 let wpiLogInput;
+let multiplier = 2;
 
 const xOffset = 0; // cm
 const yOffset = 0; // cm
 
-let width = 1303; //pixels
-let height = 647; //pixels
+let width = 595*multiplier; //pixels
+let height = 273*multiplier; //pixels
 
 const robotWidth = 89; // cm
 const robotHeight = 89; // cm
