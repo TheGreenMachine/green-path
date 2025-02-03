@@ -18,8 +18,8 @@ let isReversedCheckbox;
 let lastFieldChosen = "season";
 let isSmallField;
 
-let fieldWidth = 1654; // cm
-let fieldHeight = 821; // cm
+let fieldWidth = 1755; // cm
+let fieldHeight = 805; // cm
 
 // Instant path elements
 let instantPathDialog;
