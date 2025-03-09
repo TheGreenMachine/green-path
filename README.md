@@ -2,7 +2,7 @@
 Green Path, a front-end webapp, is used for fast, intuitive point-and-click path creation.
 
 The app is available at https://thegreenmachine.github.io/green-path/.
-Using Intellij we can use the "built-in preview" functionality instead - just open index.html and click on the little IntelliJ symbol that should pop up in the top-right corner!
+Using IntelliJ we can use the "built-in preview" functionality instead - just open index.html and click on the little IntelliJ symbol that should pop up in the top-right corner!
 ## Getting Started
 ```
 $ git clone https://github.com/TheGreenMachine/green-path.git
